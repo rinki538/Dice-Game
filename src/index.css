@@ -9,3 +9,22 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+
+
+
+body {
+  margin: 0;
+}
+
+.light {
+  background: white;
+  color: black;
+  min-height: 100vh;
+}
+
+.dark {
+  background: #121212;
+  color: white;
+  min-height: 100vh;
+}

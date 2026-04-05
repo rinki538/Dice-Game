@@ -1,12 +1,44 @@
 import styled from "styled-components";
+import { useRef } from "react";
 
-const RoleDice = ({ roleDice, currentDice }) => {
+const RoleDice = ({ roleDice, currentDice, turn, selectedNumber, winner }) => {
+  const audioRef = useRef(null);
+
+  const handleClick = () => {
+  
+    if (turn !== "user" || winner) return;
+
+    // 🔊 Play sound ONLY if number selected
+    if (selectedNumber !== undefined && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+
+    roleDice();
+  };
+
   return (
     <DiceContainer>
-      <div className="dice" onClick={roleDice}>
-        <img src={`/images/dice/dice_${currentDice}.png`} alt="dice 1" />
+      <div
+        className="dice"
+        onClick={handleClick}
+        style={{
+          opacity: turn === "user" && !winner ? 1 : 0.5,
+          pointerEvents: turn === "user" && !winner ? "auto" : "none",
+        }}
+      >
+        <img src={`/images/dice/dice_${currentDice}.png`} alt="dice" />
       </div>
-      <p>Click on Dice to roll</p>
+
+      <audio ref={audioRef} src="/audio/dice.mp3" />
+
+      <p>
+        {winner
+          ? "Game Over 🎯"
+          : turn === "user"
+          ? "Click on Dice to roll"
+          : "AI is playing... 🤖"}
+      </p>
     </DiceContainer>
   );
 };
@@ -25,5 +57,6 @@ const DiceContainer = styled.div`
 
   p {
     font-size: 24px;
+    margin-top: 10px;
   }
 `;
